@@ -1,0 +1,5 @@
+*.o
+statusicon
+Makefile
+moc_statusicon.*
+README.html

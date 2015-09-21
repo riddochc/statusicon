@@ -1,0 +1,75 @@
+= statusicon
+Chris Riddoch <riddochc@gmail.com>
+:language: c++
+
+Version 0.1, 2015-09-20
+
+== Description
+
+A general-purpose status icon for the system tray. It watches a simple JSON
+configuration file for changes.  That file describes what the icon should
+be, as well as what message should be shown.
+
+== Requirements
+
+Qt 5.x and a platform with a system tray. This should be most common platforms.
+
+== Installation
+
+To build, run the following:
+
+  qmake
+  make
+  sudo make install
+
+== Use
+
+Create a file containing the following:
+
+  {"iconfile": "/usr/share/icons/oxygen/64x64/actions/dialog-ok.png", "title": "Status notifier", "message": "It works!"}
+
+Save this into a file, such as +~/.config/statusicon+
+
+Then, run the following command:
+
+  statusicon ~/.config/statusicon
+
+The icon should appear in your system tray / task panel.  Now, edit the file to contain the following:
+
+  {"iconfile": "/usr/share/icons/oxygen/64x64/actions/dialog-cancel.png", "title": "Status notifier", "message": "Uh oh. Something broke."}
+
+When you save the file, the icon should change, and the message should be displayed.
+
+This is meant as a minimalist utility to help other tools report their status.
+
+== Contributing
+
+I'm open to suggestions for making this more useful!  Feel free to send me pull requests, patches, or fork as you see fit.
+
+== Contributors
+
+* Chris Riddoch
+
+== History
+
+=== Version 0.1
+
+* Initial release, yay!
+
+== License
+
+© 2015 Chris Riddoch
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+See the included file gpl-3.0.txt for the complete text of the GNU
+General Public License version 3.0.  If for any reason it's missing,
+see <http://www.gnu.org/licenses/>.
+
