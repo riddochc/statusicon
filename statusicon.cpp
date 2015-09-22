@@ -6,8 +6,6 @@ StatusIcon::StatusIcon(const QString& watchfile, const QString& watchdir):
         statusfile(watchfile),
         statusdir(watchdir)
 {
- //   ConfigFile config;
-
     watcher = new QFileSystemWatcher(this);
     watcher->addPath(statusfile);
     watcher->addPath(statusdir);
