@@ -19,7 +19,7 @@ class StatusIcon : public QDialog
     Q_OBJECT
 
 public:
-    StatusIcon(QString* watchFile, QString* watchDir);
+    StatusIcon(const QString& watchFile, const QString& watchDir);
 
 private slots:
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
@@ -29,16 +29,16 @@ private slots:
     void fileChanged();
 
 private:
+    QString statusfile;
+    QString statusdir;
     QAction *quitAction;
-    QString *statusfile;
-    QString *statusdir;
     QSystemTrayIcon *trayIcon;
     QMenu *trayIconMenu;
     QFileSystemWatcher *watcher;
     QTimer *timer;
-    ConfigFile *config;
-    QString *message;
-    QString *title;
+    ConfigFile config;
+    QString message;
+    QString title;
 };
 
 #endif // STATUSICON_H

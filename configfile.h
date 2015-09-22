@@ -9,24 +9,25 @@
 class ConfigFile
 {
     public:
-            ConfigFile();
-            ConfigFile(const QString &fname, const QString &title, const QString &msg);
+        ConfigFile();
+        ConfigFile(const QString &fname, const QString &title, const QString &msg);
 
-            QString iconfile() const;
-            QString message() const;
-            QString title() const;
+        QString geticonfile() const;
+        QString getmessage() const;
+        QString gettitle() const;
 
-            void seticonfile(const QString &fname);
-            void setmessage(const QString &msg);
-            void settitle(const QString &title);
+        void seticonfile(const QString &fname);
+        void setmessage(const QString &msg);
+        void settitle(const QString &title);
 
-            void read(const QJsonObject &json);
-            void write(QJsonObject &json) const;
-            bool loadFile(QString &fname);
+        void read(const QJsonObject &json);
+        void write(QJsonObject &json) const;
+        bool loadFile(QString &fname);
+
     private:
-            QString m_iconfile;
-            QString m_message;
-            QString m_title;
+        QString iconfile;
+        QString title;
+        QString message;
 };
 
 #endif

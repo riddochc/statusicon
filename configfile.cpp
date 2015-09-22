@@ -1,48 +1,47 @@
 #include "configfile.h"
 
-ConfigFile::ConfigFile() {
+ConfigFile::ConfigFile() {}
+
+ConfigFile::ConfigFile(const QString &fname, const QString &title, const QString &msg):
+    iconfile(fname),
+    title(title),
+    message(msg)
+{}
+
+QString ConfigFile::geticonfile() const {
+    return iconfile;
 }
 
-ConfigFile::ConfigFile(const QString &fname, const QString &title, const QString &msg) {
-    m_iconfile = fname;
-    m_title = title;
-    m_message = msg;
+QString ConfigFile::getmessage() const {
+    return message;
 }
 
-QString ConfigFile::iconfile() const {
-    return m_iconfile;
-}
-
-QString ConfigFile::message() const {
-    return m_message;
-}
-
-QString ConfigFile::title() const {
-    return m_title;
+QString ConfigFile::gettitle() const {
+    return title;
 }
 
 void ConfigFile::seticonfile(const QString &fname) {
-    m_iconfile = fname;
+    this->iconfile = fname;
 }
 
 void ConfigFile::setmessage(const QString &msg) {
-    m_message = msg;
+    this->message = msg;
 }
 
 void ConfigFile::settitle(const QString &title) {
-    m_title = title;
+    this->title = title;
 }
 
 void ConfigFile::read(const QJsonObject &json) {
-    m_iconfile = json["iconfile"].toString();
-    m_message = json["message"].toString();
-    m_title = json["title"].toString();
+    iconfile = json["iconfile"].toString();
+    message = json["message"].toString();
+    title = json["title"].toString();
 }
 
 void ConfigFile::write(QJsonObject &json) const {
-    json["iconfile"] = m_iconfile;
-    json["message"] = m_message;
-    json["title"] = m_title;
+    json["iconfile"] = iconfile;
+    json["message"] = message;
+    json["title"] = title;
 }
 
 bool ConfigFile::loadFile(QString &fname) {
@@ -52,15 +51,15 @@ bool ConfigFile::loadFile(QString &fname) {
         return false;
     }
     QByteArray contents = loadFile.readAll();
-    QJsonParseError *error = NULL;
-    QJsonDocument loadDoc(QJsonDocument::fromJson(contents,error));
-    if (error) {
-        qDebug() << "Error parsing json: " << error->errorString();
+    QJsonParseError error;
+    QJsonDocument configDoc = QJsonDocument::fromJson(contents, &error);
+    if (error.error != QJsonParseError::NoError) {
+        qDebug() << "Error parsing json: " << error.errorString();
         return false;
     } else {
-        QJsonObject obj = loadDoc.object();
-        if (obj.contains("iconfile") && obj.contains("message") && obj.contains("title")) {
-            read(loadDoc.object());
+        QJsonObject conf = configDoc.object();
+        if (conf.contains("iconfile") && conf.contains("message") && conf.contains("title")) {
+            read(configDoc.object());
             return true;
         } else {
             qDebug() << "JSON should contain 'iconfile', 'message', and 'title' properties";

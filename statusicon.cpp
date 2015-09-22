@@ -2,18 +2,15 @@
 #include "statusicon.h"
 #include "configfile.h"
 
-StatusIcon::StatusIcon(QString* watchfile, QString* watchdir)
+StatusIcon::StatusIcon(const QString& watchfile, const QString& watchdir):
+        statusfile(watchfile),
+        statusdir(watchdir)
 {
-    statusfile = watchfile;
-    statusdir = watchdir;
-    message = new QString("");
-    title = new QString("");
-
-    config = new ConfigFile();
+ //   ConfigFile config;
 
     watcher = new QFileSystemWatcher(this);
-    watcher->addPath(*statusfile);
-    watcher->addPath(*statusdir);
+    watcher->addPath(statusfile);
+    watcher->addPath(statusdir);
 
     quitAction = new QAction(tr("&Quit"), this);
 
@@ -37,16 +34,15 @@ StatusIcon::StatusIcon(QString* watchfile, QString* watchdir)
     trayIcon->show();
 }
 
-
 void StatusIcon::setIcon() {
     timer->stop();
-    if (config->loadFile(*statusfile)) {
-        QIcon icon = QIcon(config->iconfile());
+    if (config.loadFile(statusfile)) {
+        QIcon icon = QIcon(config.geticonfile());
         trayIcon->setIcon(icon);
         setWindowIcon(icon);
-        *message = config->message();
-        *title = config->title();
-        trayIcon->setToolTip(*message);
+        message = config.getmessage();
+        title = config.gettitle();
+        trayIcon->setToolTip(message);
         showMessage();
     }
 }
@@ -59,7 +55,7 @@ void StatusIcon::iconActivated(QSystemTrayIcon::ActivationReason reason) {
 
 void StatusIcon::showMessage() {
     QSystemTrayIcon::MessageIcon msgicon = QSystemTrayIcon::MessageIcon(QSystemTrayIcon::Information);
-    trayIcon->showMessage(*title, *message, msgicon, 2500);
+    trayIcon->showMessage(title, message, msgicon, 2500);
 }
 
 void StatusIcon::messageClicked() {
